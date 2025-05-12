@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'exercises_screen.dart';
 
 class AppHomeScreen extends StatelessWidget {
-  const AppHomeScreen({Key? key}) : super(key: key);
+  const AppHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,6 @@ class AppHomeScreen extends StatelessWidget {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            // Thay thế Column bằng SingleChildScrollView + Column để giải quyết vấn đề tràn
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,7 +29,7 @@ class AppHomeScreen extends StatelessWidget {
                   // Welcome card with profile image
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Color.fromRGBO(0, 0, 0, 0.6),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     height: 180,
@@ -65,8 +64,8 @@ class AppHomeScreen extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: Image.asset(
-                            'assets/profile_image.png', // Make sure to add this image to your assets
+                          child: Image.network(
+                            'https://th.bing.com/th/id/OIP.xPKzEY6CUGCgrw54V0U8GwHaEh?rs=1&pid=ImgDetMain',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -103,7 +102,7 @@ class AppHomeScreen extends StatelessWidget {
                       value: 0.7,
                       minHeight: 12,
                       backgroundColor: Colors.grey[700],
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFF8C42)),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF8C42)),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -174,7 +173,6 @@ class AppHomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Thêm SizedBox để tạo khoảng cách thay vì dùng Spacer
                   const SizedBox(height: 80),
                 ],
               ),
@@ -182,13 +180,12 @@ class AppHomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      // Di chuyển thanh điều hướng ra ngoài thành widget riêng ở dưới cùng
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.7),
+            color: Color.fromRGBO(0, 0, 0, 0.7),
             borderRadius: BorderRadius.circular(32),
           ),
           child: Row(
@@ -224,7 +221,7 @@ class AppHomeScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
+        color: Color.fromRGBO(0, 0, 0, 0.7),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.all(16),
@@ -248,38 +245,43 @@ class AppHomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          // Làm cho hàng này có thể scroll ngang nếu không đủ không gian
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildWorkoutDetail(label: 'Duration:', value: duration),
-                _buildWorkoutDetail(label: 'Reps:', value: reps),
-                _buildWorkoutDetail(label: 'Sets:', value: sets),
-                _buildWorkoutDetail(label: 'Exercise:', value: exercises),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle start workout
-                    },
-                    child: const Text(
-                      'Start workout',
-                      style: TextStyle(
-                        color: Colors.white,
+            child: IntrinsicWidth( // Row to size correctly
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildWorkoutDetail(label: 'Duration:', value: duration),
+                  _buildWorkoutDetail(label: 'Reps:', value: reps),
+                  _buildWorkoutDetail(label: 'Sets:', value: sets),
+                  _buildWorkoutDetail(label: 'Exercise:', value: exercises),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle start workout
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF8C42),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFF8C42),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      child: const Text(
+                        'Begin',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          )
+
         ],
       ),
     );
