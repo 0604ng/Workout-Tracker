@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'exercises_screen.dart';
+import 'profile_screen.dart';
+
 
 class AppHomeScreen extends StatelessWidget {
   const AppHomeScreen({super.key});
@@ -203,7 +205,16 @@ class AppHomeScreen extends StatelessWidget {
               ),
               _buildNavBarItem(icon: Icons.add_circle_outline),
               _buildNavBarItem(icon: Icons.calendar_today),
-              _buildNavBarItem(icon: Icons.person),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                  );
+                },
+                child: _buildNavBarItem(icon: Icons.person),
+              ),
+
             ],
           ),
         ),
