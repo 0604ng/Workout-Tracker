@@ -102,20 +102,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  _ProfileItem(icon: Icons.history, label: 'History'),
-                  _ProfileItem(icon: Icons.local_fire_department, label: 'Calories'),
-                  _ProfileItem(icon: Icons.emoji_emotions, label: 'Favourites'),
-                  _ProfileItem(icon: Icons.show_chart, label: 'Goals'),
-                ],
+              child: SizedBox(
+                height: 180,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 2,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: const [
+                    _ProfileItem(icon: Icons.history, label: 'History'),
+                    _ProfileItem(icon: Icons.local_fire_department, label: 'Calories'),
+                    _ProfileItem(icon: Icons.emoji_emotions, label: 'Favourites'),
+                    _ProfileItem(icon: Icons.show_chart, label: 'Goals'),
+                  ],
+                ),
               ),
             ),
+
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
