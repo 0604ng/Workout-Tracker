@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -117,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'E.g Johntheone',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -141,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Enter your email address',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -166,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Enter a password',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -202,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Confirm password',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -238,7 +239,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'E.g John',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -261,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'E.g Appleseed',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -284,7 +285,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Select a date',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -317,7 +318,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Select a location',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
@@ -344,7 +345,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Select city in your location',
                       hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
+                      fillColor: Colors.white.withAlpha(25),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide.none,
