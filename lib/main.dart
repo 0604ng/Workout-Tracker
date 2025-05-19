@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'Screen/welcome_screen.dart';
-import 'Screen/welcome_screen.dart';
 
 void main() {
   runApp(const WorkoutTrackerApp());
 }
 
 class WorkoutTrackerApp extends StatelessWidget {
-  const WorkoutTrackerApp({Key? key}) : super(key: key);
+  const WorkoutTrackerApp({super.key});
 
   @override
   Widget build(BuildContext context) {

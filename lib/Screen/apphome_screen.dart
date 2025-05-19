@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'exercises_screen.dart';
 import 'profile_screen.dart';
-
+import 'create_exercises_screen.dart';
+import 'create_plan_screen.dart';
+import 'famous_plan_screen.dart';
+import 'calendar_screen.dart';
 
 class AppHomeScreen extends StatelessWidget {
   const AppHomeScreen({super.key});
@@ -131,7 +134,12 @@ class AppHomeScreen extends StatelessWidget {
                   // Create new plan button
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Handle create new plan
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreatePlanScreen(),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.add, color: Colors.white),
                     label: const Text(
@@ -142,7 +150,7 @@ class AppHomeScreen extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFF8C42),
+                      backgroundColor: const Color(0xFFFF8C42),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -150,10 +158,17 @@ class AppHomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+
                   // Famous plans button
                   OutlinedButton.icon(
                     onPressed: () {
-                      // Handle famous plans
+                      //  hướng đến FamousPlanScreen khi  dùng nhấn vào nút
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FamousPlanScreen(),
+                        ),
+                      );
                     },
                     icon: Icon(
                       Icons.bar_chart,
@@ -203,8 +218,26 @@ class AppHomeScreen extends StatelessWidget {
                 },
                 child: _buildNavBarItem(icon: Icons.fitness_center),
               ),
-              _buildNavBarItem(icon: Icons.add_circle_outline),
-              _buildNavBarItem(icon: Icons.calendar_today),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateExercisesScreen()),
+                  );
+                },
+              child :_buildNavBarItem(icon: Icons.add_circle_outline),
+    ),
+              InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CalendarScreen()),
+            );
+          },
+              child :_buildNavBarItem(icon: Icons.calendar_today),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.push(

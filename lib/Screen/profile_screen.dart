@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'calories_screen.dart';
+import 'goals_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -110,11 +113,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisSpacing: 12,
                   childAspectRatio: 2,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: const [
-                    _ProfileItem(icon: Icons.history, label: 'History'),
-                    _ProfileItem(icon: Icons.local_fire_department, label: 'Calories'),
-                    _ProfileItem(icon: Icons.emoji_emotions, label: 'Favourites'),
-                    _ProfileItem(icon: Icons.show_chart, label: 'Goals'),
+                  children: [
+                    _ProfileItem(
+                      icon: Icons.history,
+                      label: 'History',
+                      onTap: () {},
+                    ),
+                    _ProfileItem(
+                      icon: Icons.local_fire_department,
+                      label: 'Calories',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CaloriesScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _ProfileItem(
+                      icon: Icons.emoji_emotions,
+                      label: 'Favourites',
+                      onTap: () {},
+                    ),
+                    _ProfileItem(
+                      icon: Icons.show_chart,
+                      label: 'Goals',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GoalsScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -171,18 +204,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 class _ProfileItem extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback onTap;
 
-  const _ProfileItem({required this.icon, required this.label});
+  const _ProfileItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Color(0xFFFF8C42), size: 30),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Color(0xFFFF8C42), size: 30),
+          const SizedBox(height: 8),
+          Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ],
+      ),
     );
   }
 }

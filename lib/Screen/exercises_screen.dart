@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ExercisesScreen extends StatelessWidget {
-  const ExercisesScreen({Key? key}) : super(key: key);
+  const ExercisesScreen({super.key});
 
   final List<String> exerciseCategories = const [
     'CHEST',

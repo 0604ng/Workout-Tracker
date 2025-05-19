@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
-import 'home_screen.dart';
+import 'apphome_screen.dart'; // Thay đổi import từ home_screen sang app_home_screen
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -122,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Forgot password?',
                       style: TextStyle(
                         color: Colors.white,
-                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
@@ -131,9 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () {
                     // Validate and login
+                    // Thay đổi từ HomeScreen sang AppHomeScreen
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      MaterialPageRoute(builder: (context) => const AppHomeScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
