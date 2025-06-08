@@ -66,8 +66,8 @@ class ExercisesScreen extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.black.withOpacity(0.8),
-            Colors.black.withOpacity(0.6),
+            Colors.black.withValues(alpha: 0.8 * 255),
+            Colors.black.withValues(alpha: 0.6 * 255),
           ],
         ),
       ),

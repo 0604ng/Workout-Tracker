@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'exercises_screen.dart'; // Thêm dòng này
+
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({super.key});
@@ -46,23 +48,38 @@ class GoalsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     alignment: Alignment.center,
-                    child: const Text("Plans", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      "Plans",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade900,
-                      borderRadius: BorderRadius.circular(8),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ExercisesScreen()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade900,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "Exercises",
+                        style: TextStyle(color: Colors.white54),
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: const Text("Exercises", style: TextStyle(color: Colors.white54)),
                   ),
                 ),
               ],
             ),
+
             const SizedBox(height: 16),
             Container(
               width: double.infinity,
