@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
-import 'apphome_screen.dart'; // Thay đổi import từ home_screen sang app_home_screen
+import 'apphome_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/provider/auth_provider.dart';
+// đảm bảo đường dẫn đúng
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -128,13 +132,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    // Validate and login
-                    // Thay đổi từ HomeScreen sang AppHomeScreen
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AppHomeScreen()),
-                    );
+                  onPressed: context.watch<AuthProvider>().isLoading
+                      ? null
+                      : () async {
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter both email and password')),
+                      );
+                      return;
+                    }
+
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Invalid email format')),
+                      );
+                      return;
+                    }
+
+                    try {
+                      await context.read<AuthProvider>().login(email, password);
+
+                      if (!context.mounted) return;
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AppHomeScreen()),
+                      );
+                    } catch (e) {
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Login failed: $e')),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
@@ -143,7 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child: context.watch<AuthProvider>().isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
                     'Login',
                     style: TextStyle(
                       fontSize: 18,
@@ -152,6 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+
+
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/provider/auth_provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -16,8 +18,31 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
+  Future<void> _handleReset() async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final email = _emailController.text.trim();
+    final authProvider = context.read<AuthProvider>();
+
+    final error = await authProvider.sendResetEmail(email);
+
+    if (!mounted) return;
+
+    if (error == null) {
+      scaffoldMessenger.showSnackBar(
+        const SnackBar(content: Text('Verification code sent to your email')),
+      );
+    } else {
+      scaffoldMessenger.showSnackBar(
+        SnackBar(content: Text(error), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AuthProvider>().isLoading;
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -72,14 +97,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () {
-                    // Send reset email
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Verification code sent to your email'),
-                      ),
-                    );
-                  },
+                  onPressed: context.watch<AuthProvider>().isLoading ? null : _handleReset,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     minimumSize: const Size.fromHeight(55),
@@ -87,7 +105,9 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child: isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
                     'Send Verification Code',
                     style: TextStyle(
                       fontSize: 18,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:untitled/provider/auth_provider.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -488,21 +489,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: context.watch<AuthProvider>().isLoading
+                        ? null
+                        : () async {
                       if (_currentStep == 0) {
                         if (_formKey.currentState!.validate()) {
                           _switchToStep(1);
                         }
                       } else {
                         if (_validateCurrentStep()) {
-                          //  Implement account creation logic
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Account created successfully!'),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                          Navigator.pop(context);
+                          final authProvider = context.read<AuthProvider>();
+                          try {
+                            await authProvider.register(
+                              username: _usernameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              firstName: _firstNameController.text.trim(),
+                              lastName: _lastNameController.text.trim(),
+                              dateOfBirth: _selectedDate!,
+                            );
+
+                            if (!context.mounted) return; //  Fix tại đây
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Account created successfully!'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            Navigator.pop(context);
+                          } catch (e) {
+                            if (!context.mounted) return; //  Và tại đây
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Registration failed:'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -513,6 +538,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                       }
                     },
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       foregroundColor: Colors.white,
@@ -521,7 +547,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       elevation: 3,
                     ),
-                    child: Text(
+                    child: context.watch<AuthProvider>().isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text(
                       _currentStep == 0 ? 'Continue' : 'Create Account',
                       style: const TextStyle(
                         fontSize: 18,
@@ -529,6 +557,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
+
                 ),
                 const SizedBox(height: 20),
                 if (_currentStep == 1)
