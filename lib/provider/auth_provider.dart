@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AuthProvider with ChangeNotifier {
+class AppAuthProvider with ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  // Login bằng email/password
   Future<void> login(String email, String password) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      // Fake delay for demo, replace with real API call
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (email == "test@example.com" && password == "123456") {
-        // Login thành công
-      } else {
-        throw Exception("Invalid credentials");
-      }
-    } catch (e) {
-      rethrow;
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      _handleFirebaseAuthError(e);
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
+
+
+
+  // Đăng ký tài khoản mới
   Future<void> register({
     required String username,
     required String email,
@@ -37,60 +41,64 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      // Replace with real API call
-      await Future.delayed(const Duration(seconds: 2));
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-      if (username.length < 3 || password.length < 6) {
-        throw Exception("Invalid registration info");
-      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'username': username,
+        'firstName': firstName,
+        'lastName': lastName,
+        'dateOfBirth': dateOfBirth.toIso8601String(),
+        'email': email,
+        'createdAt': DateTime.now().toIso8601String(),
+      });
 
-      // Save token or user info if needed
-
-    } catch (e) {
-      rethrow;
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? "Registration failed";
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
+
+
+  // Gửi email đặt lại mật khẩu
   Future<void> sendPasswordResetEmail(String email) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      // Replace with real backend call
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-        throw Exception("Invalid email format");
-      }
-
-      // Fake logic – bạn có thể gửi API tới /forgot-password
-
-    } catch (e) {
-      rethrow;
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? "Failed to send password reset email";
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
+
+  // Wrapper trả về lỗi dạng String hoặc null
   Future<String?> sendResetEmail(String email) async {
     if (email.isEmpty) return 'Email cannot be empty';
 
     try {
-      _isLoading = true;
-      notifyListeners();
-
-      await sendPasswordResetEmail(email); // Gọi API
-
-      return null; // success
+      await sendPasswordResetEmail(email);
+      return null;
     } catch (e) {
-      return 'Error: ${e.toString()}';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      return e.toString();
     }
   }
+  void _handleFirebaseAuthError(dynamic error) {
+    // Bạn có thể tùy chỉnh xử lý lỗi tại đây
+    if (error.toString().contains('user-not-found')) {
+      throw Exception('No user found for that email.');
+    } else if (error.toString().contains('wrong-password')) {
+      throw Exception('Wrong password provided.');
+    } else {
+      throw Exception('Login failed. Please try again.');
+    }
+  }
+
 }
-
-

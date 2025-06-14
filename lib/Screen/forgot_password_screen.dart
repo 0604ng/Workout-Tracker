@@ -21,7 +21,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _handleReset() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final email = _emailController.text.trim();
-    final authProvider = context.read<AuthProvider>();
+    final authProvider = context.read<AppAuthProvider>();
 
     final error = await authProvider.sendResetEmail(email);
 
@@ -41,7 +41,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.watch<AuthProvider>().isLoading;
+    final isLoading = context.watch<AppAuthProvider>().isLoading;
 
     return Container(
       decoration: const BoxDecoration(
@@ -97,7 +97,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: context.watch<AuthProvider>().isLoading ? null : _handleReset,
+                  onPressed: context.watch<AppAuthProvider>().isLoading ? null : _handleReset,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     minimumSize: const Size.fromHeight(55),

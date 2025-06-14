@@ -4,7 +4,8 @@ import 'forgot_password_screen.dart';
 import 'apphome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/provider/auth_provider.dart';
-// đảm bảo đường dẫn đúng
+
+
 
 
 class LoginScreen extends StatefulWidget {
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: context.watch<AuthProvider>().isLoading
+                  onPressed: context.watch<AppAuthProvider>().isLoading
                       ? null
                       : () async {
                     final email = _emailController.text.trim();
@@ -153,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
 
                     try {
-                      await context.read<AuthProvider>().login(email, password);
+                      await context.read<AppAuthProvider>().login(email, password);
 
                       if (!context.mounted) return;
 
@@ -176,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: context.watch<AuthProvider>().isLoading
+                  child: context.watch<AppAuthProvider>().isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
                     'Login',

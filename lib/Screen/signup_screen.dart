@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   bool _isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+    return RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   Future<void> _selectDate() async {
@@ -489,7 +489,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: context.watch<AuthProvider>().isLoading
+                    onPressed: context.watch<AppAuthProvider>().isLoading
                         ? null
                         : () async {
                       if (_currentStep == 0) {
@@ -498,16 +498,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                       } else {
                         if (_validateCurrentStep()) {
-                          final authProvider = context.read<AuthProvider>();
+                          final authProvider = context.read<AppAuthProvider>();
                           try {
-                            await authProvider.register(
-                              username: _usernameController.text.trim(),
-                              email: _emailController.text.trim(),
-                              password: _passwordController.text.trim(),
-                              firstName: _firstNameController.text.trim(),
-                              lastName: _lastNameController.text.trim(),
-                              dateOfBirth: _selectedDate!,
-                            );
+                            try {
+                              await authProvider.register(
+                                username: _usernameController.text.trim(),
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                                firstName: _firstNameController.text.trim(),
+                                lastName: _lastNameController.text.trim(),
+                                dateOfBirth: _selectedDate!,
+                              );
+
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Account created successfully!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              Navigator.pop(context);
+                            } catch (e) {
+                              if (!context.mounted) return;
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Registration failed: $e'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+
 
                             if (!context.mounted) return; //  Fix tại đây
 
@@ -547,7 +569,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       elevation: 3,
                     ),
-                    child: context.watch<AuthProvider>().isLoading
+                    child: context.watch<AppAuthProvider>().isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : Text(
                       _currentStep == 0 ? 'Continue' : 'Create Account',
