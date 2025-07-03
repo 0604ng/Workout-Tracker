@@ -17,82 +17,104 @@ class CreateExercisesScreen extends StatelessWidget {
         ),
         title: const Text('Create Exercise', style: TextStyle(color: Colors.white)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Regular exercise", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Enter a title for the exercise',
-                hintStyle: const TextStyle(color: Colors.white54),
-                filled: true,
-                fillColor: Colors.black54,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Regular exercise",
+                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: 'Enter a title for the exercise',
+                          hintStyle: const TextStyle(color: Colors.white54),
+                          filled: true,
+                          fillColor: Colors.black54,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          const Text(
+                            "Set Goal",
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(Icons.info_outline, color: Colors.white70, size: 18)
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          value: "2 months",
+                          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                          dropdownColor: Colors.grey.shade900,
+                          decoration: const InputDecoration(border: InputBorder.none),
+                          style: const TextStyle(color: Colors.white),
+                          items: const [
+                            DropdownMenuItem(value: "1 month", child: Text("1 month")),
+                            DropdownMenuItem(value: "2 months", child: Text("2 months")),
+                            DropdownMenuItem(value: "3 months", child: Text("3 months")),
+                          ],
+                          onChanged: (value) {},
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: const [
+                          _PickerBox(title: "Reps", value: "7 reps"),
+                          _PickerBox(title: "Sets", value: "10 sets"),
+                          _PickerBox(title: "Weight", value: "150 lbs"),
+                          _PickerBox(title: "Rest timer", value: "80s"),
+                          _PickerBox(title: "Distance", value: "20km"),
+                        ],
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF8C42),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            "Create workout",
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                const Text("Set Goal", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                const SizedBox(width: 8),
-                Icon(Icons.info_outline, color: Colors.white70, size: 18)
-              ],
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: DropdownButtonFormField<String>(
-                value: "2 months",
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-                dropdownColor: Colors.grey.shade900,
-                decoration: const InputDecoration(border: InputBorder.none),
-                style: const TextStyle(color: Colors.white),
-                items: const [
-                  DropdownMenuItem(value: "1 month", child: Text("1 month")),
-                  DropdownMenuItem(value: "2 months", child: Text("2 months")),
-                  DropdownMenuItem(value: "3 months", child: Text("3 months")),
-                ],
-                onChanged: (value) {},
-              ),
-            ),
-            const SizedBox(height: 24),
-            Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: const [
-                _PickerBox(title: "Reps", value: "7 reps"),
-                _PickerBox(title: "Sets", value: "10 sets"),
-                _PickerBox(title: "Weight", value: "150 lbs"),
-                _PickerBox(title: "Rest timer", value: "80s"),
-                _PickerBox(title: "Distance", value: "20km"),
-              ],
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF8C42),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: () {},
-                child: const Text("Create workout", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-              ),
-            )
-          ],
+            );
+          },
         ),
       ),
     );
