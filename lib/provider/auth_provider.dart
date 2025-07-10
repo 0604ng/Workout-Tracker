@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../exceptions/firebase_error_handler.dart';
 
 class AppAuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,23 +11,18 @@ class AppAuthProvider with ChangeNotifier {
 
   // Login bằng email/password
   Future<void> login(String email, String password) async {
-    _isLoading = true;
-    notifyListeners();
-
+    _setLoading(true);
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      _handleFirebaseAuthError(e);
+      throw FirebaseErrorHandler.toException(e);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
-
-
 
   // Đăng ký tài khoản mới
   Future<void> register({
@@ -37,9 +33,7 @@ class AppAuthProvider with ChangeNotifier {
     required String lastName,
     required DateTime dateOfBirth,
   }) async {
-    _isLoading = true;
-    notifyListeners();
-
+    _setLoading(true);
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
@@ -56,26 +50,21 @@ class AppAuthProvider with ChangeNotifier {
       });
 
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? "Registration failed";
+      throw FirebaseErrorHandler.toException(e);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
-
   // Gửi email đặt lại mật khẩu
   Future<void> sendPasswordResetEmail(String email) async {
-    _isLoading = true;
-    notifyListeners();
-
+    _setLoading(true);
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw e.message ?? "Failed to send password reset email";
+      throw FirebaseErrorHandler.toException(e);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
@@ -90,15 +79,9 @@ class AppAuthProvider with ChangeNotifier {
       return e.toString();
     }
   }
-  void _handleFirebaseAuthError(dynamic error) {
-    // Bạn có thể tùy chỉnh xử lý lỗi tại đây
-    if (error.toString().contains('user-not-found')) {
-      throw Exception('No user found for that email.');
-    } else if (error.toString().contains('wrong-password')) {
-      throw Exception('Wrong password provided.');
-    } else {
-      throw Exception('Login failed. Please try again.');
-    }
-  }
 
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 }
