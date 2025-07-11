@@ -9,14 +9,16 @@ class AppAuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  // Login bằng email/password
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  // LOGIN
   Future<void> login(String email, String password) async {
     _setLoading(true);
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       throw FirebaseErrorHandler.toException(e);
     } finally {
@@ -24,7 +26,7 @@ class AppAuthProvider with ChangeNotifier {
     }
   }
 
-  // Đăng ký tài khoản mới
+  // REGISTER
   Future<void> register({
     required String username,
     required String email,
@@ -36,7 +38,6 @@ class AppAuthProvider with ChangeNotifier {
     _setLoading(true);
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
       await FirebaseFirestore.instance
           .collection('users')
           .doc(_auth.currentUser!.uid)
@@ -48,7 +49,6 @@ class AppAuthProvider with ChangeNotifier {
         'email': email,
         'createdAt': DateTime.now().toIso8601String(),
       });
-
     } on FirebaseAuthException catch (e) {
       throw FirebaseErrorHandler.toException(e);
     } finally {
@@ -56,7 +56,7 @@ class AppAuthProvider with ChangeNotifier {
     }
   }
 
-  // Gửi email đặt lại mật khẩu
+  // SEND RESET EMAIL
   Future<void> sendPasswordResetEmail(String email) async {
     _setLoading(true);
     try {
@@ -68,10 +68,9 @@ class AppAuthProvider with ChangeNotifier {
     }
   }
 
-  // Wrapper trả về lỗi dạng String hoặc null
+  // Wrapper
   Future<String?> sendResetEmail(String email) async {
     if (email.isEmpty) return 'Email cannot be empty';
-
     try {
       await sendPasswordResetEmail(email);
       return null;
@@ -80,8 +79,15 @@ class AppAuthProvider with ChangeNotifier {
     }
   }
 
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+  // ✅ ADD THIS LOGOUT METHOD
+  Future<void> logout() async {
+    _setLoading(true);
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      debugPrint('Logout failed: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 }

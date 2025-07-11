@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:provider/provider.dart';
+import 'package:untitled/provider/auth_provider.dart';
+import 'package:untitled/screens/login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -15,70 +16,51 @@ class SettingsScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Settings',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(0),
         children: [
           _SettingsItem(
             icon: Icons.person,
             title: 'Account',
-            onTap: () {
-              // Navigate to account screen
-            },
+            onTap: () {},
           ),
           _buildDivider(),
           _SettingsItem(
             icon: Icons.lock,
             title: 'Password',
-            onTap: () {
-              // Navigate to password screen
-            },
+            onTap: () {},
           ),
           _buildDivider(),
           _SettingsItem(
             icon: Icons.help_outline,
             title: 'Help',
-            onTap: () {
-              // Navigate to help screen
-            },
+            onTap: () {},
           ),
           _buildDivider(),
           _SettingsItem(
             icon: Icons.notifications_none,
             title: 'Notifications',
-            onTap: () {
-              // Navigate to notifications screen
-            },
+            onTap: () {},
           ),
           _buildDivider(),
           _SettingsItem(
             icon: Icons.feedback_outlined,
             title: 'Feedback',
-            onTap: () {
-              // Navigate to feedback screen
-            },
+            onTap: () {},
           ),
           _buildDivider(),
           _SettingsItem(
             icon: Icons.logout,
             title: 'Logout',
-            titleColor: Colors.red,
             iconColor: Colors.red,
-            onTap: () {
-              _showLogoutDialog(context);
-            },
+            titleColor: Colors.red,
+            onTap: () => _showLogoutDialog(context),
           ),
         ],
       ),
@@ -86,46 +68,39 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Container(
-      height: 1,
-      margin: const EdgeInsets.only(left: 80),
-      color: Colors.grey[800],
-    );
+    return Container(height: 1, margin: const EdgeInsets.only(left: 80), color: Colors.grey[800]);
   }
 
   void _showLogoutDialog(BuildContext context) {
+    final parentContext = context;
+
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: parentContext,
+      builder: (dialogContext) {
         return AlertDialog(
           backgroundColor: const Color(0xFF2A2A2A),
-          title: const Text(
-            'Logout',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: const Text(
-            'Are you sure you want to logout?',
-            style: TextStyle(color: Colors.white70),
-          ),
+          title: const Text('Logout', style: TextStyle(color: Colors.white)),
+          content: const Text('Are you sure you want to logout?', style: TextStyle(color: Colors.white70)),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.grey),
-              ),
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                // Perform logout action
+              onPressed: () async {
+                Navigator.pop(dialogContext);
+
+                final authProvider = parentContext.read<AppAuthProvider>();
+                await authProvider.logout();
+
+                if (parentContext.mounted) {
+                  Navigator.of(parentContext).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
+                  );
+                }
               },
-              child: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: const Text('Logout', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -137,16 +112,16 @@ class SettingsScreen extends StatelessWidget {
 class _SettingsItem extends StatelessWidget {
   final IconData icon;
   final String title;
-  final Color? titleColor;
   final Color? iconColor;
+  final Color? titleColor;
   final VoidCallback onTap;
 
   const _SettingsItem({
     required this.icon,
     required this.title,
-    this.titleColor,
-    this.iconColor,
     required this.onTap,
+    this.iconColor,
+    this.titleColor,
   });
 
   @override
@@ -164,21 +139,13 @@ class _SettingsItem extends StatelessWidget {
                 color: Colors.grey[800],
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                color: iconColor ?? const Color(0xFFFF8C42),
-                size: 20,
-              ),
+              child: Icon(icon, color: iconColor ?? const Color(0xFFFF8C42), size: 20),
             ),
             const SizedBox(width: 20),
             Expanded(
               child: Text(
                 title,
-                style: TextStyle(
-                  color: titleColor ?? Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: TextStyle(color: titleColor ?? Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ),
           ],

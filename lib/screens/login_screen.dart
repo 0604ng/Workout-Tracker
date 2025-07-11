@@ -5,9 +5,6 @@ import 'apphome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/provider/auth_provider.dart';
 
-
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,6 +18,18 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   @override
+  void initState() {
+    super.initState();
+    _ensureLoggedOut();
+  }
+
+  Future<void> _ensureLoggedOut() async {
+    await Future.delayed(Duration.zero);
+    final authProvider = context.read<AppAuthProvider>();
+    await authProvider.logout();
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -29,6 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AppAuthProvider>().isLoading;
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -133,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: context.watch<AppAuthProvider>().isLoading
+                  onPressed: isLoading
                       ? null
                       : () async {
                     final email = _emailController.text.trim();
@@ -177,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: context.watch<AppAuthProvider>().isLoading
+                  child: isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
                     'Login',
@@ -188,8 +199,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
-
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
