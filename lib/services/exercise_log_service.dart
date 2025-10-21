@@ -4,8 +4,7 @@ import '../models/exercise_log.dart';
 class ExerciseLogService {
   final _db = FirebaseFirestore.instance;
 
-  Future<List<ExerciseLog>> getExerciseLogs(
-      String userId, String workoutId) async {
+  Future<List<ExerciseLog>> getExerciseLogs(String workoutId) async {
     final snapshot = await _db
         .collection('progress_logs')
         .doc(workoutId)

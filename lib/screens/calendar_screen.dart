@@ -34,6 +34,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 20),
@@ -139,6 +140,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               ],
             ),
+            )
           ),
         ),
       ),

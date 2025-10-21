@@ -20,11 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _ensureLoggedOut();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _ensureLoggedOut();
+    });
   }
 
   Future<void> _ensureLoggedOut() async {
-    await Future.delayed(Duration.zero);
     final authProvider = context.read<AppAuthProvider>();
     await authProvider.logout();
   }

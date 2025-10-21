@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Goal {
   final String id;
+  final String userId;
   final int targetCalories;
   final int targetDuration;
   final DateTime startDate;
@@ -8,6 +11,7 @@ class Goal {
 
   Goal({
     required this.id,
+    required this.userId,
     required this.targetCalories,
     required this.targetDuration,
     required this.startDate,
@@ -18,20 +22,22 @@ class Goal {
   factory Goal.fromJson(Map<String, dynamic> json, String id) {
     return Goal(
       id: id,
-      targetCalories: json['target_calories'],
-      targetDuration: json['target_duration'],
+      userId: json['user_id'] ?? '',
+      targetCalories: json['target_calories'] ?? 0,
+      targetDuration: json['target_duration'] ?? 0,
       startDate: (json['start_date'] as Timestamp).toDate(),
       endDate: (json['end_date'] as Timestamp).toDate(),
-      completed: json['completed'],
+      completed: json['completed'] ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'user_id': userId,
       'target_calories': targetCalories,
       'target_duration': targetDuration,
-      'start_date': startDate,
-      'end_date': endDate,
+      'start_date': Timestamp.fromDate(startDate),
+      'end_date': Timestamp.fromDate(endDate),
       'completed': completed,
     };
   }

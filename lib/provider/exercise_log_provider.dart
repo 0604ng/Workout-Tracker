@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/exercise_log.dart';
 import '../services/exercise_log_service.dart';
 
+
 class ExerciseLogProvider with ChangeNotifier {
   final ExerciseLogService _service = ExerciseLogService();
 
