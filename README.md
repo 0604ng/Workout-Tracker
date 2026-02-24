@@ -1,5 +1,5 @@
 🏋️ Workout Tracker Application
-
+(Trong quá trình hoàn thiện)
 Ứng dụng theo dõi và quản lý kế hoạch tập luyện cá nhân được xây dựng bằng Flutter và Firebase.
 Dự án tập trung vào việc giúp người dùng quản lý bài tập, theo dõi tiến độ và đặt mục tiêu luyện tập một cách hiệu quả theo thời gian thực.
 
