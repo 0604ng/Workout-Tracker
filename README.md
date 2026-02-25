@@ -86,8 +86,10 @@ Nếu bạn muốn chạy dự án này trên máy cá nhân:
 
 1️⃣ Clone repository
 git clone https://github.com/0604ng/Workout-Tracker.git
+
 2️⃣ Cài đặt dependencies
 flutter pub get
+
 3️⃣ Cấu hình Firebase
 
 Tạo project mới trên Firebase
