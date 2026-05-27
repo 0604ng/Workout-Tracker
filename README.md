@@ -103,15 +103,4 @@ flutter run
 
 ---
 
-## 🏆 Đánh giá chất lượng mã nguồn (Quality Assessment)
 
-Dự án đã được phân tích kiểm tra tĩnh nghiêm ngặt thông qua công cụ phân tích của Flutter SDK:
-```bash
-flutter analyze
-```
-**Kết quả:** **`No issues found!`** – Mã nguồn hoàn toàn sạch sẽ, không chứa bất kỳ lỗi cú pháp hoặc cảnh báo logic nào, chứng minh quy trình kiểm soát chất lượng kỹ lưỡng.
-
----
-
-## ✉️ Liên hệ & Kết nối
-Nếu bạn muốn trao đổi thêm về các giải pháp kỹ thuật, cơ hội nghề nghiệp hoặc dự án, xin vui lòng kết nối với tôi thông qua Github này! Cảm ơn bạn đã ghé thăm dự án!
