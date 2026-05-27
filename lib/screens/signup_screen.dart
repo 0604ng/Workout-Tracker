@@ -430,7 +430,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFBC9980), Color(0xFF231F20)],
+          colors: [Color(0xFF24150D), Color(0xFF0F0E13)],
         ),
       ),
       child: Scaffold(
@@ -485,9 +485,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       : _buildPersonalInfoStep(),
                 ),
                 const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF5E36).withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
                   child: ElevatedButton(
                     onPressed: context.watch<AppAuthProvider>().isLoading
                         ? null
@@ -500,38 +511,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (_validateCurrentStep()) {
                           final authProvider = context.read<AppAuthProvider>();
                           try {
-                            try {
-                              await authProvider.register(
-                                username: _usernameController.text.trim(),
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text.trim(),
-                                firstName: _firstNameController.text.trim(),
-                                lastName: _lastNameController.text.trim(),
-                                dateOfBirth: _selectedDate!,
-                              );
+                            await authProvider.register(
+                              username: _usernameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              firstName: _firstNameController.text.trim(),
+                              lastName: _lastNameController.text.trim(),
+                              dateOfBirth: _selectedDate!,
+                            );
 
-                              if (!context.mounted) return;
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Account created successfully!'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                              Navigator.pop(context);
-                            } catch (e) {
-                              if (!context.mounted) return;
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Registration failed: $e'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-
-
-                            if (!context.mounted) return; //  Fix tại đây
+                            if (!context.mounted) return;
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -541,11 +530,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                             Navigator.pop(context);
                           } catch (e) {
-                            if (!context.mounted) return; //  Và tại đây
+                            if (!context.mounted) return;
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Registration failed:'),
+                                content: Text('Registration failed: $e'),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -560,14 +549,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                       }
                     },
-
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      elevation: 3,
                     ),
                     child: context.watch<AppAuthProvider>().isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
@@ -579,7 +567,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-
                 ),
                 const SizedBox(height: 20),
                 if (_currentStep == 1)

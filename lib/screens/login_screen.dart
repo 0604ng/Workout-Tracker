@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
-import 'apphome_screen.dart';
+import 'main_navigation_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/provider/auth_provider.dart';
 
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFBC9980), Color(0xFF231F20)],
+          colors: [Color(0xFF24150D), Color(0xFF0F0E13)],
         ),
       ),
       child: Scaffold(
@@ -144,59 +144,75 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                    final email = _emailController.text.trim();
-                    final password = _passwordController.text.trim();
-
-                    if (email.isEmpty || password.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter both email and password')),
-                      );
-                      return;
-                    }
-
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Invalid email format')),
-                      );
-                      return;
-                    }
-
-                    try {
-                      await context.read<AppAuthProvider>().login(email, password);
-
-                      if (!context.mounted) return;
-
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const AppHomeScreen()),
-                      );
-                    } catch (e) {
-                      if (!context.mounted) return;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Login failed: $e')),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    minimumSize: const Size.fromHeight(55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF5E36).withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  child: isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  child: ElevatedButton(
+                    onPressed: isLoading
+                        ? null
+                        : () async {
+                      final email = _emailController.text.trim();
+                      final password = _passwordController.text.trim();
+
+                      if (email.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please enter both email and password')),
+                        );
+                        return;
+                      }
+
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Invalid email format')),
+                        );
+                        return;
+                      }
+
+                      try {
+                        await context.read<AppAuthProvider>().login(email, password);
+
+                        if (!context.mounted) return;
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+                        );
+                      } catch (e) {
+                        if (!context.mounted) return;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Login failed: $e')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      minimumSize: const Size.fromHeight(55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'exercises_screen.dart';
-import 'profile_screen.dart';
-import 'create_exercises_screen.dart';
-import 'apphome_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -20,21 +16,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFCAA88F),
-              Color(0xFF1E1E1E),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SingleChildScrollView(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 const SizedBox(height: 20),
@@ -43,8 +30,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   'Calendar',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.5,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -54,7 +42,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.chevron_left, color: Colors.white),
+                      icon: const Icon(Icons.chevron_left_rounded, color: Colors.white),
                       onPressed: () {
                         // Previous month
                       },
@@ -64,11 +52,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.chevron_right, color: Colors.white),
+                      icon: const Icon(Icons.chevron_right_rounded, color: Colors.white),
                       onPressed: () {
                         // Next month
                       },
@@ -99,100 +87,69 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                 const SizedBox(height: 40),
 
-                // No scheduled plan text
-                const Text(
-                  'No Scheduled Plan Today',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 18,
+                // No scheduled plan card
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.35),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: Colors.white.withOpacity(0.08)),
+                  ),
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.event_note_rounded,
+                        color: Color(0xFFFFAE33),
+                        size: 44,
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'No Scheduled Plan Today',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 24),
 
                 // Add a plan button
                 InkWell(
                   onTap: () {
                     // Handle add plan
                   },
+                  borderRadius: BorderRadius.circular(16),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xFFFF8C42)),
-                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: const Color(0xFFFF5E36), width: 1.5),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
-                        Icon(Icons.add, color: Color(0xFFFF8C42)),
+                        Icon(Icons.add_rounded, color: Color(0xFFFF5E36)),
                         SizedBox(width: 8),
                         Text(
                           'Add a plan',
                           style: TextStyle(
-                            color: Color(0xFFFF8C42),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFFF5E36),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
+                const SizedBox(height: 120), // Padding to avoid overlap with bottom nav
               ],
             ),
-            )
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(0, 0, 0, 0.7),
-            borderRadius: BorderRadius.circular(32),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AppHomeScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.home),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ExercisesScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.fitness_center),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CreateExercisesScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.add_circle_outline),
-              ),
-              _buildNavBarItem(icon: Icons.calendar_today, isSelected: true),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.person),
-              ),
-            ],
           ),
         ),
       ),
@@ -200,8 +157,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildCalendarGrid() {
-    // Sample calendar grid for October 2023
-    // In a real app, this would be generated dynamically
     List<List<int?>> calendarData = [
       [1, 2, 3, 4, 5, 6, 7],
       [8, 9, 10, 11, 12, 13, 14],
@@ -213,42 +168,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Column(
       children: List.generate(
         calendarData.length,
-            (rowIndex) => Padding(
-          padding: const EdgeInsets.only(bottom: 15),
+        (rowIndex) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
               7,
-                  (colIndex) {
+              (colIndex) {
                 final day = calendarData[rowIndex][colIndex];
                 return day != null
                     ? _CalendarDay(
-                  day: day,
-                  isSelected: day == 4, // Day 4 is selected in the image
-                  hasWorkout: daysWithPlans.contains(day),
-                  onTap: () {
-                    setState(() {
-                      selectedDate = DateTime(2023, 10, day);
-                    });
-                  },
-                )
-                    : const SizedBox(width: 40, height: 40); // Empty space for days outside the month
+                        day: day,
+                        isSelected: day == 4, // Day 4 is selected in the image
+                        hasWorkout: daysWithPlans.contains(day),
+                        onTap: () {
+                          setState(() {
+                            selectedDate = DateTime(2023, 10, day);
+                          });
+                        },
+                      )
+                    : const SizedBox(width: 40, height: 40);
               },
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavBarItem({
-    required IconData icon,
-    bool isSelected = false,
-  }) {
-    return Icon(
-      icon,
-      color: isSelected ? const Color(0xFFFF8C42) : Colors.grey,
-      size: 28,
     );
   }
 }
@@ -265,9 +209,10 @@ class _DayOfWeekLabel extends StatelessWidget {
       child: Text(
         label,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 16,
+        style: TextStyle(
+          color: Colors.grey.shade400,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -291,12 +236,21 @@ class _CalendarDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFFF8C42) : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
+          gradient: isSelected
+              ? const LinearGradient(
+                  colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                )
+              : null,
+          color: isSelected ? null : Colors.black.withOpacity(0.2),
+          border: isSelected
+              ? null
+              : Border.all(color: Colors.white.withOpacity(0.04), width: 1),
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -305,7 +259,7 @@ class _CalendarDay extends StatelessWidget {
               day.toString(),
               style: TextStyle(
                 color: isSelected ? Colors.white : Colors.white70,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -317,7 +271,7 @@ class _CalendarDay extends StatelessWidget {
                   width: 6,
                   height: 6,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFF8C42),
+                    color: Color(0xFFFF5E36),
                     shape: BoxShape.circle,
                   ),
                 ),

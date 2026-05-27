@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'exercises_screen.dart';
-import 'profile_screen.dart';
-import 'create_exercises_screen.dart';
 import 'create_plan_screen.dart';
 import 'famous_plan_screen.dart';
-import 'calendar_screen.dart';
 
 class AppHomeScreen extends StatelessWidget {
   const AppHomeScreen({super.key});
@@ -12,32 +8,36 @@ class AppHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFCAA88F),
-              Color(0xFF1E1E1E),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 20),
-                  // Welcome card with profile image
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 0, 0, 0.6),
-                      borderRadius: BorderRadius.circular(16),
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                // Welcome card with profile image
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.08),
+                      width: 1,
                     ),
-                    height: 180,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  height: 160,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
                     child: Row(
                       children: [
                         Expanded(
@@ -47,21 +47,29 @@ class AppHomeScreen extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   'WELCOME BACK',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
+                                    color: Colors.grey.shade400,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5,
                                   ),
                                 ),
-                                Text(
-                                  'JOHN !!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                                const SizedBox(height: 6),
+                                ShaderMask(
+                                  shaderCallback: (bounds) => const LinearGradient(
+                                    colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                                  ).createShader(bounds),
+                                  child: const Text(
+                                    'JOHN !!',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 1.0,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -72,67 +80,89 @@ class AppHomeScreen extends StatelessWidget {
                           child: Image.network(
                             'https://th.bing.com/th/id/OIP.xPKzEY6CUGCgrw54V0U8GwHaEh?rs=1&pid=ImgDetMain',
                             fit: BoxFit.cover,
+                            height: double.infinity,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  // Progress indicator
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Overall progress:',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                ),
+                const SizedBox(height: 24),
+                
+                // Progress indicator
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      'Overall progress:',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Text(
-                        '70%',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    Text(
+                      '70%',
+                      style: TextStyle(
+                        color: Color(0xFFFFAE33),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                
+                // Progress bar
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: LinearProgressIndicator(
+                    value: 0.7,
+                    minHeight: 10,
+                    backgroundColor: Colors.white.withOpacity(0.05),
+                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFF5E36)),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                // Next workout card
+                _buildWorkoutCard(
+                  title: 'Your next workout:',
+                  exerciseName: 'Push ups',
+                  duration: '30 mins',
+                  reps: '115',
+                  sets: '15',
+                  exercises: '5',
+                ),
+                const SizedBox(height: 16),
+                
+                // Last workout card
+                _buildWorkoutCard(
+                  title: 'Your last workout:',
+                  exerciseName: 'Pull ups',
+                  duration: '30 mins',
+                  reps: '115',
+                  sets: '15',
+                  exercises: '5',
+                ),
+                const SizedBox(height: 24),
+                
+                // Create new plan button
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF5E36).withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 6),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  // Progress bar
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: 0.7,
-                      minHeight: 12,
-                      backgroundColor: Colors.grey[700],
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF8C42)),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Next workout card
-                  _buildWorkoutCard(
-                    title: 'Your next workout:',
-                    exerciseName: 'Push ups',
-                    duration: '30 minutes',
-                    reps: '115',
-                    sets: '15',
-                    exercises: '5',
-                  ),
-                  const SizedBox(height: 16),
-                  // Last workout card
-                  _buildWorkoutCard(
-                    title: 'Your last workout:',
-                    exerciseName: 'Pull ups',
-                    duration: '30 minutes',
-                    reps: '115',
-                    sets: '15',
-                    exercises: '5',
-                  ),
-                  const SizedBox(height: 24),
-                  // Create new plan button
-                  ElevatedButton.icon(
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -141,114 +171,60 @@ class AppHomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.add, color: Colors.white),
+                    icon: const Icon(Icons.add_rounded, color: Colors.white),
                     label: const Text(
                       'Create new plan',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF8C42),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Famous plans button
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      //  hướng đến FamousPlanScreen khi  dùng nhấn vào nút
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FamousPlanScreen(),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.bar_chart,
-                      color: Color(0xFFFF8C42),
-                    ),
-                    label: const Text(
-                      'FAMOUS PLANS',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Color(0xFFFF8C42)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 80),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(0, 0, 0, 0.7),
-            borderRadius: BorderRadius.circular(32),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildNavBarItem(icon: Icons.home, isSelected: true),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ExercisesScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.fitness_center),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CreateExercisesScreen()),
-                  );
-                },
-              child :_buildNavBarItem(icon: Icons.add_circle_outline),
-    ),
-              InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CalendarScreen()),
-            );
-          },
-              child :_buildNavBarItem(icon: Icons.calendar_today),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                  );
-                },
-                child: _buildNavBarItem(icon: Icons.person),
-              ),
+                ),
+                const SizedBox(height: 16),
 
-            ],
+                // Famous plans button
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FamousPlanScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.star_rounded,
+                    color: Color(0xFFFFAE33),
+                  ),
+                  label: const Text(
+                    'FAMOUS PLANS',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFFFF5E36), width: 1.5),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 120), // Extra space for floating navbar
+              ],
+            ),
           ),
         ),
       ),
@@ -265,18 +241,24 @@ class AppHomeScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromRGBO(0, 0, 0, 0.7),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.08),
+          width: 1,
+        ),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFFFF8C42),
-              fontSize: 16,
+            title.toUpperCase(),
+            style: const TextStyle(
+              color: Color(0xFFFFAE33),
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
             ),
           ),
           const SizedBox(height: 8),
@@ -284,39 +266,47 @@ class AppHomeScreen extends StatelessWidget {
             exerciseName,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 28,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: IntrinsicWidth( // Row to size correctly
+            child: IntrinsicWidth(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildWorkoutDetail(label: 'Duration:', value: duration),
-                  _buildWorkoutDetail(label: 'Reps:', value: reps),
-                  _buildWorkoutDetail(label: 'Sets:', value: sets),
-                  _buildWorkoutDetail(label: 'Exercise:', value: exercises),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                  _buildWorkoutDetail(label: 'Duration', value: duration),
+                  _buildWorkoutDetail(label: 'Reps', value: reps),
+                  _buildWorkoutDetail(label: 'Sets', value: sets),
+                  _buildWorkoutDetail(label: 'Exercise', value: exercises),
+                  const SizedBox(width: 8),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                      ),
+                    ),
                     child: ElevatedButton(
                       onPressed: () {
                         // Handle start workout
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF8C42),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       ),
                       child: const Text(
                         'Begin',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -324,8 +314,7 @@ class AppHomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-          )
-
+          ),
         ],
       ),
     );
@@ -336,15 +325,16 @@ class AppHomeScreen extends StatelessWidget {
     required String value,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12.0),
+      padding: const EdgeInsets.only(right: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 12,
+            style: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 4),
@@ -352,23 +342,12 @@ class AppHomeScreen extends StatelessWidget {
             value,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildNavBarItem({
-    required IconData icon,
-    bool isSelected = false,
-  }) {
-    return Icon(
-      icon,
-      color: isSelected ? Color(0xFFFF8C42) : Colors.grey,
-      size: 28,
     );
   }
 }

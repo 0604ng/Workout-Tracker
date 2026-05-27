@@ -28,16 +28,54 @@ class WorkoutTrackerApp extends StatelessWidget {
         title: 'NTK Workout Tracker',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.deepOrange,
-          scaffoldBackgroundColor: Colors.transparent,
+          useMaterial3: true,
+          colorScheme: const ColorScheme.dark(
+            primary: Color(0xFFFF5E36),
+            secondary: Color(0xFFFFAE33),
+            surface: Color(0xFF1E1E26),
+            error: Color(0xFFFF3B30),
+          ),
+          scaffoldBackgroundColor: const Color(0xFF0F0F14),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            iconTheme: IconThemeData(color: Colors.white),
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: Colors.grey[800],
+            fillColor: Colors.white.withOpacity(0.05),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide.none,
             ),
-            hintStyle: TextStyle(color: Colors.grey[500]),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(color: Colors.white.withOpacity(0.08)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Color(0xFFFF5E36), width: 1.5),
+            ),
+            hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF5E36),
+              foregroundColor: Colors.white,
+              elevation: 4,
+              shadowColor: const Color(0xFFFF5E36).withOpacity(0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
           ),
         ),
         home: const WelcomeScreen(),

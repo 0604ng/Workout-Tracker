@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'apphome_screen.dart';
-import 'exercises_screen.dart';
-import 'profile_screen.dart';
-import 'create_exercises_screen.dart';
 
 class FamousPlanScreen extends StatelessWidget {
   const FamousPlanScreen({super.key});
@@ -19,106 +15,73 @@ class FamousPlanScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: const Text(
           'FAMOUS PLANS',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+          ),
         ),
       ),
       body: ListView.separated(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         itemCount: plans.length,
         separatorBuilder: (_, __) => const SizedBox(height: 16),
         itemBuilder: (context, index) {
-          return Row(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.orange,
-                  shape: BoxShape.circle,
+          return Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.35),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
-                padding: const EdgeInsets.all(10),
-                child: const Icon(Icons.add, color: Colors.black),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(6),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+                    ),
+                    shape: BoxShape.circle,
                   ),
-                  child: Text(
-                    plans[index],
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.1,
+                  padding: const EdgeInsets.all(12),
+                  child: const Icon(Icons.add_rounded, color: Colors.white, size: 24),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      plans[index],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.1,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(0, 0, 0, 0.7),
-            borderRadius: BorderRadius.circular(32),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AppHomeScreen()),
-                  );
-                },
-                child: const Icon(Icons.home, color: Colors.grey, size: 28),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ExercisesScreen()),
-                  );
-                },
-                child: const Icon(Icons.fitness_center, color: Colors.grey, size: 28),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CreateExercisesScreen()),
-                  );
-                },
-                child: const Icon(Icons.add_circle_outline, color: Colors.grey, size: 28),
-              ),
-              const Icon(Icons.calendar_today, color: Colors.grey, size: 28),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                  );
-                },
-                child: const Icon(Icons.person, color: Colors.grey, size: 28),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

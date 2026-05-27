@@ -19,39 +19,45 @@ class ExercisesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF212121),
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        automaticallyImplyLeading: false, // Prevents showing back arrow as it is a root tab
         title: const Text(
           'EXERCISES',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          physics: const AlwaysScrollableScrollPhysics(), // Cho phép cuộn
-          shrinkWrap: true,
-          itemCount: exerciseCategories.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 1.0, // Tỉ lệ chiều rộng/chiều cao
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: exerciseCategories.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemBuilder: (context, index) {
+                    return _buildExerciseCategory(title: exerciseCategories[index]);
+                  },
+                ),
+              ),
+              const SizedBox(height: 100), // Space for floating bottom nav bar
+            ],
           ),
-          itemBuilder: (context, index) {
-            return _buildExerciseCategory(title: exerciseCategories[index]);
-          },
         ),
       ),
     );
@@ -60,48 +66,65 @@ class ExercisesScreen extends StatelessWidget {
   Widget _buildExerciseCategory({required String title}) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.black.withValues(alpha: 0.8 * 255),
-            Colors.black.withValues(alpha: 0.6 * 255),
-          ],
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.08),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.black,
+              color: Colors.black.withOpacity(0.4),
+              border: Border.all(
+                color: const Color(0xFFFF5E36).withOpacity(0.2),
+                width: 1.5,
+              ),
             ),
-            child: Center(
+            child: const Center(
               child: Icon(
-                Icons.local_fire_department,
-                color: Color(0xFFFF8C42),
-                size: 28,
+                Icons.local_fire_department_rounded,
+                color: Color(0xFFFF7A00),
+                size: 32,
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
             decoration: BoxDecoration(
-              color: Color(0xFFFF8C42),
-              borderRadius: BorderRadius.circular(4),
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFF5E36), Color(0xFFFFAE33)],
+              ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF5E36).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Text(
               title,
               style: const TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 13,
+                letterSpacing: 0.5,
               ),
             ),
           ),
